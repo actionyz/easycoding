@@ -1,0 +1,23 @@
+# build new contain
+docker run --name weblogic -i -t centos
+
+docker run -d -p 8000:80 foo/live /bin/bash
+
+# remove contain
+docker rm name/id 
+
+# remove images
+docker rmi $(docker images -q)1
+
+
+# mv images to files
+docker export furious_bell > /home/myubuntu-export-1204.tar
+docker import /home/myubuntu-export-1204.tar alias
+
+# mv contain to files
+docker save 9610cfc68e8d > /home/myubuntu-save-1204.tar
+docker load /home/myubuntu-export-1204.tar alias
+
+
+# build docker image accoding to dockerfile
+docker build -t name .
