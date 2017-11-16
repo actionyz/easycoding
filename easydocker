@@ -21,3 +21,10 @@ docker load /home/myubuntu-export-1204.tar alias
 
 # build docker image accoding to dockerfile
 docker build -t name .
+
+
+# options to push image on remote Repository
+
+docker login
+docker tag id username/repositoryname:tag
+docker push username/repositoryname:tag

