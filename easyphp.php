@@ -48,6 +48,8 @@ json_encode($arr) # change array to json strings
 file=php://filter/read=convert.base64-encode/resource=index.php 
 # @file
 file_put_contents("test.txt", "This is another something.", FILE_APPEND);# file append
+# @header
+header('Location: http://www.baidu.com/');
 ?>
 
 
@@ -70,5 +72,9 @@ file_put_contents("test.txt", "This is another something.", FILE_APPEND);# file 
 	$result = $conn->query("SELECT * FROM `user` WHERE username = '$username'");
 	$row = $result->fetch_assoc();
 	$row = @mysqli_fetch_assoc($result);
-	
+	//---------------------------------
+	$link = mysql_connect('localhost', 'user', 'pass');
+	$db_selected = mysql_select_db('foo', $link);
+	$result = mysql_query("select password from users where username='" . $username . "'", $con);
+	$row = mysql_fetch_array($result);	
 ?>

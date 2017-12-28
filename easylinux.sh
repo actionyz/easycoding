@@ -33,11 +33,17 @@ iptables -t nat -A POSTROUTING --dst 127.0.0.1 -p tcp --dport 9999 -j SNAT --to-
 
 nmap -PS 172.17.0.2-255 # scans port among ips
 
+#@route
+route add -host 172.16.21.180  gw 192.107.1.254 dev enp0s25
 
+#@ lookup what is running 
+netstat -anp
+ps -ef -aux
 
 # @run
-
-# 
+route add -net 45.78.29.0 netmask 255.255.255.0 gw 172.16.0.1 dev enp0s25
+route add -host 45.78.29.252  gw 192.168.43.1 dev wlp3s0
+# 	
 python test.py &
 
 #running at background 
@@ -46,9 +52,37 @@ nohup python test.py &
 # @tar
 tar -cvf /tmp/etc.tar /etc #only packet 
 tar -zcvf /tmp/etc.tar.gz /etc # not only packet but also compress
-
 tar -xvzf etc.tar.gz -C /tmp
+unzip aa.zip -d /usr/local
 
 # @ssh
 scp -P 26551  debugger.zip root@45.78.29.252:/home #from windows to linux
+scp username@servername:/remote_path/filename ~/local_destination
+
+scp -r username@servername:/remote_path/remote_dir/ ~/local_destination
+scp  -r ~/local_dir username@servername:/remote_path/remote_dir
+
 sshpass -p root ssh -p6766 qsb@45.78.29.252 #sshpass input password directly
+nohup autossh -p 26551 -f -M 6701 -NR '*:6766:localhost:22' root@45.78.29.252 # redirct shell
+ssh -CfNg -R 6666:127.0.0.1:22 root@45.78.29.252 #transport port
+ssh -f -C2qTnN -D 6666root@45.78.29.252
+ssh -p 22 root@45.78.29.252 'cmd'
+
+pkill -KILL -t pts/1
+# @git
+
+# @mysql
+source d:/dbname.sql #import data to database
+
+# @ew
+# port transfort
+ew -s lcx_slave -d insideip -e 888 -f outsideip -g 999
+ew -s lcx_listen -l 10800 -e 888
+# @Regeorg
+python reGeorgSocksProxy.py -l 172.16.1.248 -p 666 -u http://45.78.29.252/downme/tunnel.nosocket.php
+
+# curl 
+curl URL -A "Mozilla/5.0" # useragent
+curl -X POST --data "data=xxx" example.com/form.cgi # post
+curl --header "x-forwarded-for:127.0.0.1" --local-port 23333 -A SniperOJ-Web-Broswer http://120.24.215.80:10005/
+curl --cookie "name=xxx" www.example.com  # cookie
