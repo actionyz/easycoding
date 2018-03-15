@@ -107,6 +107,33 @@ import time
 time.sleep(1)# sleep 1 seconds
 # [os]
 
+# [pwntools]
+import pwn
+s = ssh(host='pwnable.kr', port=2222,
+        user='uaf',
+        password='guest')
+sh = process('./shell')
+a = s.process(["./uaf", "4", "/dev/stdin"])
+sh = remote('server',9000)
+
+gdb.attch(sh,'''
+break *0x011111
+continue
+''')
+
+context.log_level = 'debug'
+
+sh.recv()
+sh.recv(1024)
+sh.recvuntil()
+sh.recvline() #读取到'\n'
+sh.recvlines(n)
+sh.recvall() #读取到EOF
+
+sh.send()
+sh.sendline() #会自动加换行符
+
+# [zio]
 # [re]
 
 # [open]
