@@ -86,3 +86,10 @@ curl URL -A "Mozilla/5.0" # useragent
 curl -X POST --data "data=xxx" example.com/form.cgi # post
 curl --header "x-forwarded-for:127.0.0.1" --local-port 23333 -A SniperOJ-Web-Broswer http://120.24.215.80:10005/
 curl --cookie "name=xxx" www.example.com  # cookie
+
+
+#libcdatabase
+./find printf 260 puts f30
+./find __libc_start_main_ret a83
+./dump libc6_2.19-0ubuntu6.6_i386
+./identify /usr/lib/libc.so.6
