@@ -116,7 +116,7 @@ sh = process('./shell')
 a = s.process(["./uaf", "4", "/dev/stdin"])
 sh = remote('server',9000)
 
-gdb.attch(sh,'''
+gdb.attach(sh,'''
 break *0x011111
 continue
 ''')
@@ -133,9 +133,16 @@ sh.recvall() #读取到EOF
 sh.send()
 sh.sendline() #会自动加换行符
 
+# @LibcSearcher
+from LibcSearcher import *
+libc = LibcSearcher('__libc_start_main_ret', libc_start_main_ret)
+system = libc.dump('system')
+puts = libc.dump('_IO_puts')
+strbinsh = libc.dump('str_bin_sh')
+
 # [zio]
 # [re]
-
+# [RSA]
 # [open]
 '''
 w 写方式
@@ -259,7 +266,7 @@ import random
 import string
 import re
 def md5(str):
-    import hashlib
+        
     m = hashlib.md5().update(str).hexdigest()
     return m
 

@@ -93,3 +93,17 @@ curl --cookie "name=xxx" www.example.com  # cookie
 ./find __libc_start_main_ret a83
 ./dump libc6_2.19-0ubuntu6.6_i386
 ./identify /usr/lib/libc.so.6
+
+#gdb libheap
+heap -h #print help list
+fastbins
+fastbins 0x602c00
+smallbins 1
+heapls
+heapls 0x602c00
+freebins
+mstats
+p mp_ #
+p *(mchunkptr) 0x608790
+P *((struct _IO_FILE_plus*) 0x602400)
+python print(malloc_chunk(0x608790))

