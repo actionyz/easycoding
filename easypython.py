@@ -1,7 +1,5 @@
 # coding:utf-8
-
 # Mainly devided into two aspects, one is the method of using models,another is integrated function
-
 # 1.models 
 
 
@@ -108,14 +106,16 @@ time.sleep(1)# sleep 1 seconds
 # [os]
 
 # [pwntools]
-import pwn
+ 
+from pwn import *
+
 s = ssh(host='pwnable.kr', port=2222,
         user='uaf',
         password='guest')
 sh = process('./shell')
 a = s.process(["./uaf", "4", "/dev/stdin"])
 sh = remote('server',9000)
-
+level2 = ELF('./level2')
 gdb.attach(sh,'''
 break *0x011111
 continue
@@ -129,6 +129,9 @@ sh.recvuntil()
 sh.recvline() #读取到'\n'
 sh.recvlines(n)
 sh.recvall() #读取到EOF
+p32(0x804a024)
+p64(0x804a024)
+
 
 sh.send()
 sh.sendline() #会自动加换行符
@@ -169,16 +172,7 @@ import base64
 base64.b64encode('es')
 base64.b64decode('es')
 
-# [pwn]
-from pwn import *
-sh = process('./level2')
-sh = remote('pwn2.jarvisoj.com', 9879)
-level2 = ELF('./level2')
-sh.recvuntil('\n')
-p32(0x804a024)
-p64(0x804a024)
-sh.send(payload)
-sh.interactive()
+
 # [BeautifulSoup]
 from bs4 import BeautifulSoup
 res = requests.get(url)
@@ -336,3 +330,15 @@ def dichotomie(l,r,i):#利用二分法查找
 for i in range(1,100):
     dichotomie(32,127,i)
 print string
+
+# pwn leak address
+
+from LibcSearcher import *
+
+#第二个参数，为已泄露的实际地址,或最后12位(比如：d90)，int类型
+obj = LibcSearcher("fgets", 0X7ff39014bd90)
+
+obj.dump("system")        #system 偏移
+obj.dump("str_bin_sh")    #/bin/sh 偏移
+obj.dump("__libc_start_main_ret")    
+
