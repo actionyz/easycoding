@@ -6,6 +6,10 @@ echo ${#l[*]},${l[*]} #means array.len  and array.content
 echo   $@ , $# ,$$ ,$! ,    #all of the params, params.len ,current uid,last uid
 
 
+
+
+
+#iptables nmap route tar ssh git mysql ew Regeorg curl libcdatabase gdb
 # [service or others]
 # @iptables
 
@@ -70,7 +74,8 @@ ssh -p 22 root@45.78.29.252 'cmd'
 
 pkill -KILL -t pts/1
 # @git
-
+git remote add 4ct10n git@github.com:actionyz/actionyz.github.io.git # add remote repositores
+git config --global user.email "1021533940@qq.com"  # add user messages
 # @mysql
 source d:/dbname.sql #import data to database
 
@@ -90,6 +95,7 @@ curl --cookie "name=xxx" www.example.com  # cookie
 # gcc
 # -z execstack  
 # -f no-stack-protector 
+sysctl -w kernel.randomize_va_space=0 # Aslr 
 gcc 1.c -o vul -m32 -g -zexecstack -fno-stack-protector -g
 #libcdatabase
 ./find printf 260 puts f30
